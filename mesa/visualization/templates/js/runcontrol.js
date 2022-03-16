@@ -15,6 +15,8 @@ const startModelButton = document.getElementById("play-pause");
 const stepModelButton = document.getElementById("step");
 const resetModelButton = document.getElementById("reset");
 const stepDisplay = document.getElementById("currentStep");
+const loadButton = document.getElementById("load");
+const inputForm=document.getElementById("load_id");
 
 
 /**
@@ -52,6 +54,12 @@ function ModelController(tick = 0, fps = 3, running = false, finished = false) {
         this.tick += 1;
         stepDisplay.innerText = this.tick;
         send({ type: "get_step", step: this.tick });
+    }
+
+    this.load = function load() {
+
+        this.reset();
+        send({ type: "load", path: inputForm.value + ".pkl" });
     }
 
     /** Reset the model and visualization state but keep its running state */
@@ -123,6 +131,11 @@ stepModelButton.onclick = () => {
     if (!controller.running & !controller.finished) {
         controller.step();
     }
+};
+
+loadButton.onclick = () => {
+    controller.load();
+
 };
 resetModelButton.onclick = () => controller.reset();
 

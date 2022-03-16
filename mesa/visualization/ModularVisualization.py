@@ -211,6 +211,10 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
             self.application.reset_model()
             self.write_message(self.viz_state_message)
 
+        elif msg["type"] == "load":
+            self.application.model = pickle.load(open(msg["path"], "rb"))
+            self.write_message(self.viz_state_message)
+
         elif msg["type"] == "submit_params":
             param = msg["param"]
             value = msg["value"]
